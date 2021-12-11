@@ -35,6 +35,8 @@ interface AppComponent {
     fun inject(resourcesFragment: ResourcesFragment)
     fun inject(galleryPresenter: GalleryPresenter)
     fun inject(galleryFragment: GalleryFragment)
+    fun inject(settingsFragment: SettingsFragment)
+    fun inject(settingsPresenter: SettingsPresenter)
     fun inject(resourcesGridPresenter: ResourcesGridPresenter)
     fun inject(foldersTreePresenter: FoldersTreePresenter)
     fun inject(foldersWalker: FoldersWalker)

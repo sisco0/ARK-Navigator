@@ -37,6 +37,11 @@ class MainPresenter: MvpPresenter<MainView>() {
         router.newRootScreen(Screens.ResourcesScreen(RootAndFav(null, null)))
     }
 
+    fun goToSettingsScreen() {
+        Log.d(MAIN, "creating Settings screen")
+        router.newRootScreen(Screens.SettingsScreen())
+    }
+
     fun backClicked() {
         Log.d(MAIN, "[back] clicked in MainPresenter")
         router.exit()
