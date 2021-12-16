@@ -29,7 +29,7 @@ class SettingsPresenter : MvpPresenter<SettingsView>() {
         }
     }
 
-    fun onCrashPreferenceClick(crashReport: CrashReport) {
+    fun onCrashReportingClick(crashReport: CrashReport) {
         presenterScope.launch {
             Log.d(SETTINGS_SCREEN, "Saving crash report preference: $crashReport")
             userPreferences.setCrashReportPref(crashReport)

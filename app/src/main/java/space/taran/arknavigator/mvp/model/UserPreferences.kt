@@ -21,8 +21,8 @@ class UserPreferences @Inject constructor(val context: Context) {
         setSorting(Sorting.DEFAULT)
         setSortingAscending(true)
         setCrashReportPref(CrashReport.NONE)
-        setImgCacheReplication(ImgCacheReplication.NONE)
-        setIndexReplication(IndexReplication.NONE)
+        setImgCacheReplication(ImgCacheReplication.ENABLED)
+        setIndexReplication(IndexReplication.ENABLED)
     }
 
     suspend fun setSorting(sorting: Sorting) {
@@ -67,7 +67,9 @@ class UserPreferences @Inject constructor(val context: Context) {
     }
 
     suspend fun getImgCacheReplication(): ImgCacheReplication {
-        val imgCacheReplicationInt = dataStore.data.first()[PreferencesKeys.IMG_CACHE_REPLICATION_PREF] ?: 0
+        val imgCacheReplicationInt =
+            dataStore.data.first()[PreferencesKeys.IMG_CACHE_REPLICATION_PREF]
+
         return imgCacheReplicationFromInt(imgCacheReplicationInt)
     }
 
@@ -78,7 +80,8 @@ class UserPreferences @Inject constructor(val context: Context) {
     }
 
     suspend fun getIndexReplication(): IndexReplication {
-        val indexReplicationInt = dataStore.data.first()[PreferencesKeys.INDEX_REPLICATION_PREF] ?: 0
+        val indexReplicationInt =
+            dataStore.data.first()[PreferencesKeys.INDEX_REPLICATION_PREF]
         return indexReplicationFromInt(indexReplicationInt)
     }
 
@@ -95,11 +98,11 @@ class UserPreferences @Inject constructor(val context: Context) {
     }
 
     enum class ImgCacheReplication {
-        NONE, ENABLED, DISABLED
+        ENABLED, DISABLED
     }
 
     enum class IndexReplication {
-        NONE, ENABLED, DISABLED
+        ENABLED, DISABLED
     }
 
     private fun crashReportFromInt(int: Int): CrashReport {
@@ -110,15 +113,13 @@ class UserPreferences @Inject constructor(val context: Context) {
         } else prefOrdinal
     }
 
-    private fun imgCacheReplicationFromInt(int: Int): ImgCacheReplication {
-        val prefOrdinal = ImgCacheReplication.values()[int]
-        return if (prefOrdinal == ImgCacheReplication.NONE) ImgCacheReplication.ENABLED
-        else prefOrdinal
+    private fun imgCacheReplicationFromInt(int: Int?): ImgCacheReplication {
+        return if (int != null) ImgCacheReplication.values()[int]
+        else ImgCacheReplication.ENABLED
     }
 
-    private fun indexReplicationFromInt(int: Int): IndexReplication {
-        val prefOrdinal = IndexReplication.values()[int]
-        return if (prefOrdinal == IndexReplication.NONE) IndexReplication.ENABLED
-        else prefOrdinal
+    private fun indexReplicationFromInt(int: Int?): IndexReplication {
+        return if (int != null) IndexReplication.values()[int]
+        else IndexReplication.ENABLED
     }
 }

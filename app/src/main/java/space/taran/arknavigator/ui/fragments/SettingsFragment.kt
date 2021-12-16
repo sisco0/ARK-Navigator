@@ -56,7 +56,7 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsView {
 
         binding.apply {
             crashGroup.setOnCheckedChangeListener { rg, checkedID ->
-                presenter.onCrashPreferenceClick(crashReportFromButton(checkedID))
+                presenter.onCrashReportingClick(crashReportFromButton(checkedID))
                 rgButtonSelected(rg, checkedID)
             }
 
@@ -78,7 +78,6 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsView {
                 )
             }
 
-            //todo: insert meaningful explanation for images cache replication
             imgCacheInfo.setOnClickListener {
                 showInfoDialog(
                     requireContext(),
@@ -87,7 +86,6 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsView {
                 )
             }
 
-            //todo: insert meaningful explanation for index replication
             indexReplicationInfo.setOnClickListener {
                 showInfoDialog(
                     requireContext(),
@@ -143,46 +141,46 @@ class SettingsFragment : MvpAppCompatFragment(), SettingsView {
         ContextCompat.getColor(requireContext(), colorID)
 
     private fun crashReportFromButton(buttonID: Int): CrashReport {
-        val reversed = crashReportMap.entries.associate { (k, v) -> v to k }
+        val reversed = crashReportToBtnMap.entries.associate { (k, v) -> v to k }
         return reversed.getOrDefault(buttonID, CrashReport.NONE)
     }
 
     private fun buttonFromCrashReport(crashReport: CrashReport): Int {
-        return crashReportMap[crashReport]
+        return crashReportToBtnMap[crashReport]
             ?: throw AssertionError("CrashReport must be of known type")
     }
 
     private fun imgReplicationFromButton(buttonID: Int): ImgCacheReplication {
-        val reversed = imgReplicationMap.entries.associate { (k, v) -> v to k }
-        return reversed.getOrDefault(buttonID, ImgCacheReplication.NONE)
+        val reversed = imgReplicationToBtnMap.entries.associate { (k, v) -> v to k }
+        return reversed.getOrDefault(buttonID, ImgCacheReplication.ENABLED)
     }
 
     private fun buttonFromImgReplication(imgReplication: ImgCacheReplication): Int {
-        return imgReplicationMap[imgReplication]
+        return imgReplicationToBtnMap[imgReplication]
             ?: throw AssertionError("ImgCacheReplication must be of known type")
     }
 
     private fun indexReplicationFromButton(buttonID: Int): IndexReplication {
-        val reversed = indexReplicationMap.entries.associate { (k, v) -> v to k }
-        return reversed.getOrDefault(buttonID, IndexReplication.NONE)
+        val reversed = indexReplicationToBtnMap.entries.associate { (k, v) -> v to k }
+        return reversed.getOrDefault(buttonID, IndexReplication.ENABLED)
     }
 
     private fun buttonFromIndexReplication(indexReplication: IndexReplication): Int {
-        return indexReplicationMap[indexReplication]
+        return indexReplicationToBtnMap[indexReplication]
             ?: throw AssertionError("IndexReplication must be of known type")
     }
 
-    private val crashReportMap = mapOf(
+    private val crashReportToBtnMap = mapOf(
         CrashReport.SEND_AUTOMATICALLY to R.id.crashSendAutomatically,
         CrashReport.DONT_SEND to R.id.crashDontSend
     )
 
-    private val imgReplicationMap = mapOf(
+    private val imgReplicationToBtnMap = mapOf(
         ImgCacheReplication.ENABLED to R.id.imgReplicationOn,
         ImgCacheReplication.DISABLED to R.id.imgReplicationOff
     )
 
-    private val indexReplicationMap = mapOf(
+    private val indexReplicationToBtnMap = mapOf(
         IndexReplication.ENABLED to R.id.indexReplicationOn,
         IndexReplication.DISABLED to R.id.indexReplicationOff
     )
