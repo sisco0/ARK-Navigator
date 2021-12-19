@@ -60,6 +60,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         setSupportActionBar(binding.toolbar)
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.page_settings -> {
+                    Log.d(MAIN, "switching to Settings screen")
+                    presenter.goToSettingsScreen()
+                    true
+                }
                 R.id.page_roots -> {
                     Log.d(MAIN, "switching to Folders screen")
                     presenter.goToFoldersScreen()
@@ -68,11 +73,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
                 R.id.page_tags -> {
                     Log.d(MAIN, "switching to Resources screen")
                     presenter.goToResourcesScreen()
-                    true
-                }
-                R.id.page_settings -> {
-                    Log.d(MAIN, "switching to Settings screen")
-                    presenter.goToSettingsScreen()
                     true
                 }
                 else -> {

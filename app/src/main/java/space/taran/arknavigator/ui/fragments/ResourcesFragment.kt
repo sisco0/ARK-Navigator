@@ -88,7 +88,7 @@ class ResourcesFragment : MvpAppCompatFragment(), ResourcesView,
 
     override fun init() {
         Log.d(RESOURCES_SCREEN, "initializing ResourcesFragment")
-        (activity as MainActivity).setSelectedTab(1)
+        (activity as MainActivity).setSelectedTab(2)
         (activity as MainActivity).setToolbarVisibility(true)
         (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
         setHasOptionsMenu(true)
