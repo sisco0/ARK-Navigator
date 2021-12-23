@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.View
+import androidx.activity.addCallback
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -40,7 +41,7 @@ import space.taran.arknavigator.utils.extensions.makeGone
 import space.taran.arknavigator.utils.extensions.makeVisible
 import java.nio.file.Path
 
-class GalleryFragment : MvpAppCompatFragment(), GalleryView, BackButtonListener, NotifiableView {
+class GalleryFragment : MvpAppCompatFragment(), GalleryView, NotifiableView {
 
     private lateinit var binding: FragmentGalleryBinding
 
@@ -88,6 +89,10 @@ class GalleryFragment : MvpAppCompatFragment(), GalleryView, BackButtonListener,
             } else {
                 presenter.onSystemUIVisibilityChange(false)
             }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            presenter.onBackClick()
         }
 
         pagerAdapter = PreviewsPager(presenter.previewsPresenter)
@@ -209,11 +214,6 @@ class GalleryFragment : MvpAppCompatFragment(), GalleryView, BackButtonListener,
             presenter.storage
         )
         dialog.show(childFragmentManager, EditTagsDialogFragment.FRAGMENT_TAG)
-    }
-
-    override fun backClicked(): Boolean {
-        Log.d(GALLERY_SCREEN, "[back] clicked in GalleryFragment")
-        return presenter.onBackClick()
     }
 
     @SuppressLint("ClickableViewAccessibility")

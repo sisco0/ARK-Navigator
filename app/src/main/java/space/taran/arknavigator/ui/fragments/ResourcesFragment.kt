@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.*
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -42,8 +43,7 @@ import kotlin.math.abs
 //`path` is used for filtering resources' paths
 //       if it is `null`, then no filtering is performed
 //       (recommended instead of passing same value for `path` and `root)
-class ResourcesFragment : MvpAppCompatFragment(), ResourcesView,
-    BackButtonListener {
+class ResourcesFragment : MvpAppCompatFragment(), ResourcesView {
 
     private val presenter by moxyPresenter {
         ResourcesPresenter(requireArguments()[ROOT_AND_FAV_KEY] as RootAndFav).apply {
@@ -111,6 +111,10 @@ class ResourcesFragment : MvpAppCompatFragment(), ResourcesView,
         binding.ivDragHandler.setOnTouchListener(::dragHandlerTouchListener)
         binding.etTagsFilter.doAfterTextChanged {
             presenter.tagsSelectorPresenter.onFilterChanged(it.toString())
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            presenter.onBackClick()
         }
     }
 
@@ -223,10 +227,6 @@ class ResourcesFragment : MvpAppCompatFragment(), ResourcesView,
 
     override fun closeSortDialog() {
         sortByDialog?.dismiss()
-    }
-
-    override fun backClicked(): Boolean {
-        return presenter.onBackClick()
     }
 
     private fun initResultListeners() {

@@ -203,9 +203,8 @@ class GalleryPresenter(
         viewState.viewInExternalApp(index.getPath(currentResource.id))
     }
 
-    fun onBackClick(): Boolean {
+    fun onBackClick() {
         Log.d(GALLERY_SCREEN, "quitting from GalleryPresenter")
         router.exit()
-        return true
     }
 }
