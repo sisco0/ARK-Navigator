@@ -83,14 +83,6 @@ class GalleryFragment : MvpAppCompatFragment(), GalleryView, NotifiableView {
         (requireActivity() as MainActivity).setToolbarVisibility(false)
         (requireActivity() as MainActivity).setBottomNavigationVisibility(false)
 
-        requireActivity().window.decorView.setOnSystemUiVisibilityChangeListener { visibility ->
-            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
-                presenter.onSystemUIVisibilityChange(true)
-            } else {
-                presenter.onSystemUIVisibilityChange(false)
-            }
-        }
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             presenter.onBackClick()
         }
@@ -149,10 +141,8 @@ class GalleryFragment : MvpAppCompatFragment(), GalleryView, NotifiableView {
         binding.viewPager.isUserInputEnabled = enabled
     }
 
-    override fun setFullscreen(fullscreen: Boolean) {
-        val isControlsVisible = !fullscreen
-        binding.previewControls.isVisible = isControlsVisible
-        FullscreenHelper.setStatusBarVisibility(false, requireActivity().window)
+    override fun setControlsVisibility(visible: Boolean) {
+        binding.previewControls.isVisible = visible
     }
 
     override fun notifyUser(message: String, moreTime: Boolean) {
@@ -236,6 +226,12 @@ class GalleryFragment : MvpAppCompatFragment(), GalleryView, NotifiableView {
                 progressText.setVisibilityAndLoadingStatus(View.GONE)
             }
         }
+    }
+
+    override fun exitFullscreen() {
+        FullscreenHelper.setStatusBarVisibility(true, requireActivity().window)
+        (requireActivity() as MainActivity).setToolbarVisibility(true)
+        (requireActivity() as MainActivity).setBottomNavigationVisibility(true)
     }
 
     /**

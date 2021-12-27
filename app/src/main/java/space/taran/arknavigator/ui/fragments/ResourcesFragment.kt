@@ -169,7 +169,7 @@ class ResourcesFragment : MvpAppCompatFragment(), ResourcesView {
     }
 
     override fun notifyUser(message: String, moreTime: Boolean) {
-        Notifications.notifyUser(context, message, moreTime)
+        if (isFragmentVisible()) Notifications.notifyUser(context, message, moreTime)
     }
 
     override fun setTagsEnabled(enabled: Boolean) {
@@ -389,6 +389,13 @@ class ResourcesFragment : MvpAppCompatFragment(), ResourcesView {
 
     private fun updateDragHandlerBias() {
         updateVerticalBias(binding.ivDragHandler)
+    }
+
+    /**
+     * ResourcesFragment can be overlapped by GalleryFragment
+     */
+    private fun isFragmentVisible(): Boolean {
+        return parentFragmentManager.fragments.find { f -> f is GalleryFragment } == null
     }
 
     private fun changeSortOrderEnabledStatus(
